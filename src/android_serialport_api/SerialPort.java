@@ -36,15 +36,22 @@ public class SerialPort {
 	private FileDescriptor mFd;
 	private FileInputStream mFileInputStream;
 	private FileOutputStream mFileOutputStream;
+	private static final String SYSTEM_BIN_SU = "/system/bin/su";
+	private static final String SYSTEM_XBIN_SU = "/system/xbin/su";
 
 	public SerialPort(File device, int baudrate, int flags) throws SecurityException, IOException {
-
+        String suPath = SYSTEM_BIN_SU;
+        if (new File(SYSTEM_BIN_SU).canExecute()) {
+            suPath = SYSTEM_BIN_SU;
+        } else if (new File(SYSTEM_XBIN_SU).canExecute()) {
+            suPath = SYSTEM_XBIN_SU;
+        }
 		/* Check access permission */
 		if (!device.canRead() || !device.canWrite()) {
 			try {
 				/* Missing read/write permission, trying to chmod the file */
 				Process su;
-				su = Runtime.getRuntime().exec("/system/bin/su");
+				su = Runtime.getRuntime().exec(suPath);
 				String cmd = "chmod 666 " + device.getAbsolutePath() + "\n"
 						+ "exit\n";
 				su.getOutputStream().write(cmd.getBytes());
