@@ -8,7 +8,7 @@ import java.security.InvalidParameterException;
 
 /**
  * @author benjaminwan
- *´®¿Ú¸¨Öú¹¤¾ßÀà
+ *ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 public abstract class SerialHelper{
 	private SerialPort mSerialPort;
@@ -70,12 +70,12 @@ public abstract class SerialHelper{
 	//----------------------------------------------------
 	public void sendHex(String sHex){
 		byte[] bOutArray = MyFunc.HexToByteArr(sHex);
-		send(bOutArray);		
+		send(bOutArray);
 	}
 	//----------------------------------------------------
 	public void sendTxt(String sTxt){
 		byte[] bOutArray =sTxt.getBytes();
-		send(bOutArray);		
+		send(bOutArray);
 	}
 	//----------------------------------------------------
 	private class ReadThread extends Thread {
@@ -86,15 +86,16 @@ public abstract class SerialHelper{
 				try
 				{
 					if (mInputStream == null) return;
-					byte[] buffer=new byte[512];
+					byte[] buffer = new byte[512];
 					int size = mInputStream.read(buffer);
 					if (size > 0){
+//						Log.i("SystemInitService", "ReadThread in");
 						ComBean ComRecData = new ComBean(sPort,buffer,size);
 						onDataReceived(ComRecData);
 					}
 					try
 					{
-						Thread.sleep(50);//ÑÓÊ±50ms
+						Thread.sleep(500);//ï¿½ï¿½Ê±50ms
 					} catch (InterruptedException e)
 					{
 						e.printStackTrace();
@@ -109,7 +110,7 @@ public abstract class SerialHelper{
 	}
 	//----------------------------------------------------
 	private class SendThread extends Thread{
-		public boolean suspendFlag = true;// ¿ØÖÆÏß³ÌµÄÖ´ÐÐ
+		public boolean suspendFlag = true;// ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ìµï¿½Ö´ï¿½ï¿½
 		@Override
 		public void run() {
 			super.run();
@@ -138,12 +139,12 @@ public abstract class SerialHelper{
 			}
 		}
 
-		//Ïß³ÌÔÝÍ£
+		//ï¿½ß³ï¿½ï¿½ï¿½Í£
 		public void setSuspendFlag() {
 		this.suspendFlag = true;
 		}
-		
-		//»½ÐÑÏß³Ì
+
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½
 		public synchronized void setResume() {
 		this.suspendFlag = false;
 		notify();
